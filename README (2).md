@@ -86,13 +86,19 @@ Each trigger:
 | <img width="377" height="362" alt="image" src="https://github.com/user-attachments/assets/61b2a301-23db-4d65-826d-88f9ccc517cf" />
 
  | <img width="396" height="333" alt="image" src="https://github.com/user-attachments/assets/e685d7ef-6df8-4066-b8e6-2f7bec55b407" />
- | ![Plans](screenshots/plans.png) |
+ | <img width="365" height="398" alt="image" src="https://github.com/user-attachments/assets/2ffd134e-3928-4412-bbc5-a91b57b250f7" /><img width="371" height="334" alt="image" src="https://github.com/user-attachments/assets/55dbf52b-c21f-4ae6-b995-1c5b9a804397" />
+
+ |
 
 | Dashboard | Trigger Fired | Wallet |
 |---|---|---|
-| ![Dashboard](screenshots/dashboard.png) | ![Trigger](screenshots/trigger.png) | ![Wallet](screenshots/wallet.png) |
+| <img width="329" height="319" alt="image" src="https://github.com/user-attachments/assets/acdbd6d9-e955-431a-b6e9-08f49150dda1" />
+ | <img width="365" height="315" alt="image" src="https://github.com/user-attachments/assets/170d555e-733a-4b03-a2ea-be2ed924238d" /><img width="363" height="361" alt="image" src="https://github.com/user-attachments/assets/105760f2-e12b-4b0d-abe7-2fc967ca10da" />
 
-> 📌 Add screenshots to `/screenshots/` folder and update the paths above.
+ | <img width="262" height="340" alt="image" src="https://github.com/user-attachments/assets/cdef24f4-4366-4f25-a065-39b6205c81bb" />
+|
+
+>
 
 ---
 
