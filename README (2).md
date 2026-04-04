@@ -83,7 +83,8 @@ Each trigger:
 
 | Landing | Registration | Plan Selection |
 |---|---|---|
-| (https://github.com/user-attachments/assets/3884e92d-fc07-4e5a-ae4b-ad282397c9ca)
+| <img width="377" height="362" alt="image" src="https://github.com/user-attachments/assets/61b2a301-23db-4d65-826d-88f9ccc517cf" />
+
  | <img width="396" height="333" alt="image" src="https://github.com/user-attachments/assets/e685d7ef-6df8-4066-b8e6-2f7bec55b407" />
  | ![Plans](screenshots/plans.png) |
 
