@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShiftShield – Income Protection for Gig Workers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 1 — LANDING
+  ═══════════════════════════════════════ -->
+  <section class="screen active" id="screen-landing">
+    <div class="landing-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    <div class="landing-content">
+      <div class="logo-mark">⚡</div>
+      <h1 class="brand">Shift<span>Shield</span></h1>
+      <p class="tagline">Parametric income protection<br/>built for gig workers.</p>
+      <p class="sub">Rain, outages, or heatwaves — when your shift stops,<br/>your payout starts. Automatically.</p>
+      <button class="btn btn-primary btn-lg" onclick="goTo('screen-register')">
+        Get Protected Now →
+      </button>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-num">50M+</span>
+          <span class="stat-label">Gig Workers</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-num">&lt;2s</span>
+          <span class="stat-label">Claim Time</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-num">0</span>
+          <span class="stat-label">Forms Filed</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 2 — REGISTRATION
+  ═══════════════════════════════════════ -->
+  <section class="screen" id="screen-register">
+    <nav class="topbar">
+      <span class="brand-sm">⚡ ShiftShield</span>
+      <span class="step-badge">Step 1 of 3</span>
+    </nav>
+    <div class="page-content">
+      <div class="page-header">
+        <h2>Register</h2>
+        <p class="page-sub">Tell us about your work so we can tailor your coverage.</p>
+      </div>
+
+      <div class="card">
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" placeholder="e.g. Arjun Kumar" />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-work">Work Type</label>
+          <select id="reg-work">
+            <option value="delivery">🛵 Delivery Partner</option>
+            <option value="cab">🚕 Cab Driver</option>
+            <option value="grocery">🛒 Grocery Runner</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Location Risk Zone</label>
+          <div class="radio-group">
+            <label class="radio-card">
+              <input type="radio" name="risk" value="safe" checked />
+              <span class="radio-body">
+                <span class="radio-icon">🟢</span>
+                <span class="radio-label">Safe Zone</span>
+                <span class="radio-note">+₹0/wk</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="risk" value="medium" />
+              <span class="radio-body">
+                <span class="radio-icon">🟡</span>
+                <span class="radio-label">Medium Risk</span>
+                <span class="radio-note">+₹20/wk</span>
+              </span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="risk" value="high" />
+              <span class="radio-body">
+                <span class="radio-icon">🔴</span>
+                <span class="radio-label">High Risk</span>
+                <span class="radio-note">+₹40/wk</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="registerUser()">Continue →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 3 — PLAN SELECTION
+  ═══════════════════════════════════════ -->
+  <section class="screen" id="screen-plans">
+    <nav class="topbar">
+      <button class="back-btn" onclick="goTo('screen-register')">← Back</button>
+      <span class="brand-sm">⚡ ShiftShield</span>
+      <span class="step-badge">Step 2 of 3</span>
+    </nav>
+    <div class="page-content">
+      <div class="page-header">
+        <h2>Choose Your Plan</h2>
+        <p class="page-sub">Coverage activates instantly. Cancel anytime.</p>
+      </div>
+
+      <!-- Weather Condition Toggle -->
+      <div class="card weather-card">
+        <label class="section-label">Current Weather Condition</label>
+        <div class="toggle-row">
+          <button class="toggle-btn active" id="wx-normal" onclick="setWeather('normal', this)">☀️ Normal</button>
+          <button class="toggle-btn" id="wx-monsoon" onclick="setWeather('monsoon', this)">🌧️ Monsoon</button>
+          <button class="toggle-btn" id="wx-extreme" onclick="setWeather('extreme', this)">⛈️ Extreme</button>
+        </div>
+      </div>
+
+      <!-- Plan Cards -->
+      <div class="plan-card" id="plan-basic" onclick="selectPlan('basic')">
+        <div class="plan-row">
+          <div>
+            <div class="plan-name">Basic Shield</div>
+            <div class="plan-desc">3 disruption types covered</div>
+          </div>
+          <div class="plan-price">
+            <span class="price-amount" id="price-basic">₹100</span>
+            <span class="price-period">/week</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li>✦ Rain &amp; Heatwave Events</li>
+          <li>✦ Demand Drop Coverage</li>
+          <li>✦ Up to ₹2,000/week payout</li>
+          <li>✦ Zero-touch claim processing</li>
+        </ul>
+      </div>
+
+      <div class="plan-card plan-card-featured" id="plan-premium" onclick="selectPlan('premium')">
+        <div class="featured-badge">BEST VALUE</div>
+        <div class="plan-row">
+          <div>
+            <div class="plan-name">Premium Shield</div>
+            <div class="plan-desc">All disruption types + higher payouts</div>
+          </div>
+          <div class="plan-price">
+            <span class="price-amount" id="price-premium">₹150</span>
+            <span class="price-period">/week</span>
+          </div>
+        </div>
+        <ul class="plan-features">
+          <li>✦ All Basic Shield features</li>
+          <li>✦ Platform Outage Coverage</li>
+          <li>✦ 1.4× payout multiplier</li>
+          <li>✦ Up to ₹5,000/week payout</li>
+        </ul>
+      </div>
+
+      <!-- Premium Preview -->
+      <div class="card premium-preview" id="premium-preview-box">
+        <div class="preview-label">Your estimated weekly premium</div>
+        <div class="preview-amount" id="preview-amount">₹100</div>
+        <div class="preview-breakdown" id="preview-breakdown">Base ₹100 + Risk ₹0 + Weather ₹0</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="confirmPlan()">Activate Coverage →</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 4 — DASHBOARD
+  ═══════════════════════════════════════ -->
+  <section class="screen" id="screen-app">
+
+    <nav class="topbar topbar-app">
+      <span class="brand-sm">⚡ ShiftShield</span>
+      <div class="wallet-pill">
+        💰 <span id="nav-wallet">₹0</span>
+      </div>
+    </nav>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tb-dashboard" onclick="switchTab('dashboard')">📊 Dashboard</button>
+      <button class="tab-btn" id="tb-triggers" onclick="switchTab('triggers')">⚡ Triggers</button>
+      <button class="tab-btn" id="tb-wallet" onclick="switchTab('wallet')">💰 Wallet</button>
+    </div>
+
+    <!-- ── DASHBOARD TAB ── -->
+    <div class="tab-content active" id="tab-dashboard">
+      <div class="page-content">
+
+        <div class="greeting-card card">
+          <div class="greeting-top">
+            <div>
+              <div class="greeting-label">Welcome back,</div>
+              <div class="greeting-name" id="dash-name">—</div>
+            </div>
+            <div class="status-dot-wrap">
+              <span class="status-dot"></span>
+              <span class="status-text">Active</span>
+            </div>
+          </div>
+          <div class="coverage-row">
+            <div class="cov-item">
+              <span class="cov-label">Plan</span>
+              <span class="cov-val" id="dash-plan">—</span>
+            </div>
+            <div class="cov-item">
+              <span class="cov-label">Premium</span>
+              <span class="cov-val" id="dash-premium">—</span>
+            </div>
+            <div class="cov-item">
+              <span class="cov-label">Wallet</span>
+              <span class="cov-val accent" id="dash-wallet">₹0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">Recent Events</div>
+        <div id="events-list">
+          <div class="empty-state">
+            <span>📭</span>
+            <p>No disruptions yet.<br/>Your coverage is live and monitoring.</p>
+          </div>
+        </div>
+
+        <button class="btn btn-outline btn-sm" style="margin-top:24px;" onclick="resetApp()">← Start Over</button>
+      </div>
+    </div>
+
+    <!-- ── TRIGGERS TAB ── -->
+    <div class="tab-content" id="tab-triggers">
+      <div class="page-content">
+        <div class="page-header">
+          <h2>Fire a Trigger</h2>
+          <p class="page-sub">Simulate a real-world disruption and watch zero-touch claims process instantly.</p>
+        </div>
+
+        <div class="trigger-grid">
+          <button class="trigger-btn" onclick="fireTrigger('rain')">
+            <span class="trig-icon">🌧️</span>
+            <span class="trig-label">Heavy Rain</span>
+          </button>
+          <button class="trigger-btn" onclick="fireTrigger('heat')">
+            <span class="trig-icon">🌡️</span>
+            <span class="trig-label">Heatwave</span>
+          </button>
+          <button class="trigger-btn" onclick="fireTrigger('outage')">
+            <span class="trig-icon">📵</span>
+            <span class="trig-label">App Outage</span>
+          </button>
+          <button class="trigger-btn" onclick="fireTrigger('demand')">
+            <span class="trig-icon">📉</span>
+            <span class="trig-label">Demand Drop</span>
+          </button>
+        </div>
+
+        <!-- Trigger Result -->
+        <div class="result-card card" id="result-card" style="display:none;">
+          <div class="result-header">
+            <span class="result-event-icon" id="result-icon">🌧️</span>
+            <div>
+              <div class="result-title" id="result-title">Heavy Rain</div>
+              <div class="result-status">✅ Claim Auto-Processed</div>
+            </div>
+          </div>
+          <div class="result-metrics">
+            <div class="metric">
+              <span class="metric-label">Disruption Score</span>
+              <span class="metric-val" id="result-score">—</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Payout</span>
+              <span class="metric-val accent" id="result-payout">—</span>
+            </div>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-track">
+              <div class="score-bar-fill" id="score-bar"></div>
+            </div>
+          </div>
+          <p class="result-message" id="result-message"></p>
+        </div>
+
+        <!-- Upgrade notice for Basic plan -->
+        <div class="upgrade-note card" id="upgrade-note" style="display:none;">
+          <p>⚠️ <strong>App Outage</strong> coverage requires <strong>Premium Shield</strong>.</p>
+          <button class="btn btn-outline btn-sm" onclick="goTo('screen-plans')">Upgrade Plan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WALLET TAB ── -->
+    <div class="tab-content" id="tab-wallet">
+      <div class="page-content">
+
+        <div class="wallet-hero card">
+          <div class="wallet-label">Total Wallet Balance</div>
+          <div class="wallet-amount" id="wallet-balance">₹0</div>
+          <div class="wallet-sub">Auto-credited via parametric triggers</div>
+        </div>
+
+        <div class="wallet-stats">
+          <div class="w-stat card">
+            <span class="w-stat-label">Total Earned</span>
+            <span class="w-stat-val accent" id="wallet-earned">₹0</span>
+          </div>
+          <div class="w-stat card">
+            <span class="w-stat-label">Premium Paid</span>
+            <span class="w-stat-val red" id="wallet-premium">₹0</span>
+          </div>
+          <div class="w-stat card">
+            <span class="w-stat-label">Events</span>
+            <span class="w-stat-val" id="wallet-events">0</span>
+          </div>
+        </div>
+
+        <div class="section-title">Transaction History</div>
+        <div id="wallet-tx-list">
+          <div class="empty-state">
+            <span>🧾</span>
+            <p>No transactions yet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Processing Overlay -->
+  <div class="processing-overlay" id="processing-overlay">
+    <div class="processing-box">
+      <div class="spinner"></div>
+      <div class="processing-title">Processing Claim</div>
+      <div class="processing-step" id="processing-step">Fetching event data...</div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span>💰</span>
+    <span id="toast-text">₹250 credited to your wallet</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
