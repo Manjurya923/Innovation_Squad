@@ -167,7 +167,7 @@ Or simply **double-click `index.html`** — no server needed.
    - Branch: `main`
    - Folder: `/ (root)`
 4. Click **Save**
-5. Your app is live at: `https://github.com/Manjurya923/Innovation_Squad/blob/main/shiftshield.html`
+5. Your app is live at:  https://manjurya923.github.io/Innovation_Squad/
 
 > ⏱️ GitHub Pages typically goes live within 60–90 seconds.
 
