@@ -36,6 +36,7 @@ Premiums are calculated dynamically based on:
 - **Weather condition surcharge** (Normal +₹0 / Monsoon +₹25 / Extreme +₹50)
 
 ### 🗂️ Plan Selection
+
 | Feature | Basic Shield | Premium Shield |
 |---|---|---|
 | Weekly Premium | From ₹100 | From ₹150 |
@@ -44,6 +45,7 @@ Premiums are calculated dynamically based on:
 | Payout Multiplier | 1.0× | 1.4× |
 
 ### ⚡ Automated Trigger Buttons
+
 | Trigger | Coverage |
 |---|---|
 | 🌧️ Heavy Rain | Basic + Premium |
@@ -81,24 +83,41 @@ Each trigger:
 
 ## 📸 Screenshots
 
-| Landing | Registration | Plan Selection |
-|---|---|---|
-| <img width="377" height="362" alt="image" src="https://github.com/user-attachments/assets/61b2a301-23db-4d65-826d-88f9ccc517cf" />
+<table>
+  <tr>
+    <th align="center">Landing</th>
+    <th align="center">Registration</th>
+    <th align="center">Plan Selection</th>
+  </tr>
+  <tr>
+    <td align="center"><img width="240" src="https://github.com/user-attachments/assets/61b2a301-23db-4d65-826d-88f9ccc517cf" alt="Landing Screen"/></td>
+    <td align="center"><img width="240" src="https://github.com/user-attachments/assets/e685d7ef-6df8-4066-b8e6-2f7bec55b407" alt="Registration Screen"/></td>
+    <td align="center"><img width="240" src="https://github.com/user-attachments/assets/2ffd134e-3928-4412-bbc5-a91b57b250f7" alt="Plan Selection Screen"/></td>
+  </tr>
+</table>
 
- | <img width="396" height="333" alt="image" src="https://github.com/user-attachments/assets/e685d7ef-6df8-4066-b8e6-2f7bec55b407" />
- | <img width="365" height="398" alt="image" src="https://github.com/user-attachments/assets/2ffd134e-3928-4412-bbc5-a91b57b250f7" /><img width="371" height="334" alt="image" src="https://github.com/user-attachments/assets/55dbf52b-c21f-4ae6-b995-1c5b9a804397" />
+<table>
+  <tr>
+    <th align="center">Premium Calculator</th>
+    <th align="center">Dashboard</th>
+    <th align="center">Wallet</th>
+  </tr>
+  <tr>
+    <td align="center"><img width="240" src="https://github.com/user-attachments/assets/55dbf52b-c21f-4ae6-b995-1c5b9a804397" alt="Premium Calculator"/></td>
+    <td align="center"><img width="240" src="https://github.com/user-attachments/assets/acdbd6d9-e955-431a-b6e9-08f49150dda1" alt="Dashboard Screen"/></td>
+    <td align="center"><img width="240" src="https://github.com/user-attachments/assets/cdef24f4-4366-4f25-a065-39b6205c81bb" alt="Wallet Screen"/></td>
+  </tr>
+</table>
 
- |
-
-| Dashboard | Trigger Fired | Wallet |
-|---|---|---|
-| <img width="329" height="319" alt="image" src="https://github.com/user-attachments/assets/acdbd6d9-e955-431a-b6e9-08f49150dda1" />
- | <img width="365" height="315" alt="image" src="https://github.com/user-attachments/assets/170d555e-733a-4b03-a2ea-be2ed924238d" /><img width="363" height="361" alt="image" src="https://github.com/user-attachments/assets/105760f2-e12b-4b0d-abe7-2fc967ca10da" />
-
- | <img width="262" height="340" alt="image" src="https://github.com/user-attachments/assets/cdef24f4-4366-4f25-a065-39b6205c81bb" />
-|
-
->
+<table>
+  <tr>
+    <th align="center" colspan="2">Trigger Fired — Auto Claim Pipeline</th>
+  </tr>
+  <tr>
+    <td align="center"><img width="320" src="https://github.com/user-attachments/assets/170d555e-733a-4b03-a2ea-be2ed924238d" alt="Trigger Processing"/></td>
+    <td align="center"><img width="320" src="https://github.com/user-attachments/assets/105760f2-e12b-4b0d-abe7-2fc967ca10da" alt="Trigger Result"/></td>
+  </tr>
+</table>
 
 ---
 
@@ -170,7 +189,7 @@ shiftshield/
 
 ## 🏆 Hackathon Submission
 
-**Event:** Guidewire DEVTrails 2026
+**Event:** Guidewire DEVTrails 2026  
 **Track:** Emerging Risk / Gig Economy Insurance
 
 ### Submission Description
