@@ -128,7 +128,7 @@ Each trigger:
 | Markup | HTML5 (semantic, accessible) |
 | Styling | CSS3 (custom properties, grid, flexbox, animations) |
 | Logic | Vanilla JavaScript ES6+ |
-| Fonts | [Manrope] + [Space Mono] |
+| Fonts | Manrope + Space Mono |
 | Storage | `localStorage` for session persistence |
 | Deployment | GitHub Pages (zero dependencies) |
 
