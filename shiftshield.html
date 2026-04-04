@@ -1,1 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ShiftShield – Income Insurance for Gig Workers</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080c14;
+    --surface: #0f1624;
+    --surface2: #141d2e;
+    --border: #1e2d47;
+    --amber: #f5a623;
+    --amber-glow: #f5a62340;
+    --amber-dim: #c47d0e;
+    --green: #00e676;
+    --green-dim: #00e67620;
+    --red: #ff4757;
+    --red-dim: #ff475720;
+    --blue: #00b4d8;
+    --blue-dim: #00b4d820;
+    --text: #e8eaf6;
+    --text-muted: #6b7fa3;
+    --text-dim: #3a4a6b;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID NOISE BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,12,20,0.9);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.3rem;
+    color: var(--amber);
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--text); }
+  .nav-badge {
+    background: var(--amber-glow);
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .nav-wallet {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .nav-wallet .amt { color: var(--green); font-weight: 600; }
+
+  /* ── CONTENT ── */
+  .content { flex: 1; padding: 24px; max-width: 480px; margin: 0 auto; width: 100%; }
+
+  /* ── HEADINGS ── */
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 2rem;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+  .subtitle { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card-highlight {
+    border-color: var(--amber);
+    box-shadow: 0 0 20px var(--amber-glow);
+  }
+  .card-green {
+    border-color: var(--green);
+    box-shadow: 0 0 20px var(--green-dim);
+  }
+  .card-red { border-color: var(--red); }
+
+  /* ── FORM ── */
+  .form-group { margin-bottom: 16px; }
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+  input, select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  input:focus, select:focus { border-color: var(--amber); }
+  select option { background: var(--surface2); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary {
+    background: var(--amber);
+    color: #000;
+  }
+  .btn-primary:hover { background: #ffb733; transform: translateY(-1px); box-shadow: 0 6px 20px var(--amber-glow); }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+  }
+  .btn-outline:hover { border-color: var(--amber); color: var(--amber); }
+  .btn-danger {
+    background: var(--red-dim);
+    border: 1.5px solid var(--red);
+    color: var(--red);
+  }
+  .btn-danger:active { background: var(--red); color: #fff; }
+  .btn-sm {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    width: auto;
+  }
+
+  /* ── PLAN CARDS ── */
+  .plan-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+  }
+  .plan-card:hover { border-color: var(--amber-dim); }
+  .plan-card.selected {
+    border-color: var(--amber);
+    background: var(--surface2);
+    box-shadow: 0 0 24px var(--amber-glow);
+  }
+  .plan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .plan-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; }
+  .plan-price {
+    text-align: right;
+  }
+  .plan-price .amount {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--amber);
+  }
+  .plan-price .period { color: var(--text-muted); font-size: 0.78rem; }
+  .plan-features { list-style: none; }
+  .plan-features li {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .plan-features li::before { content: '✦'; color: var(--amber); font-size: 0.6rem; }
+  .plan-badge {
+    background: var(--amber);
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+
+  /* ── PREMIUM DISPLAY ── */
+  .premium-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .premium-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+  .premium-amount {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.8rem;
+    color: var(--amber);
+    line-height: 1;
+    margin: 8px 0 4px;
+    transition: all 0.3s;
+  }
+  .premium-breakdown { font-size: 0.8rem; color: var(--text-muted); }
+
+  .risk-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .risk-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.18s;
+  }
+  .risk-btn.active-safe { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+  .risk-btn.active-medium { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+  .risk-btn.active-high { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+
+  /* ── TRIGGERS ── */
+  .trigger-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .trigger-btn {
+    padding: 18px 12px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .trigger-btn .icon { font-size: 1.6rem; }
+  .trigger-btn:hover { border-color: var(--amber); transform: translateY(-2px); }
+  .trigger-btn:active { transform: scale(0.97); }
+
+  /* ── PAYOUT MODAL / TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--surface);
+    border: 1.5px solid var(--green);
+    border-radius: var(--radius);
+    padding: 18px 24px;
+    min-width: 300px;
+    box-shadow: 0 8px 32px rgba(0,230,118,0.2);
+    z-index: 999;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast .toast-amount {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--green);
+  }
+  .toast .toast-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+  .toast-icon { font-size: 1.8rem; margin-bottom: 6px; }
+
+  /* ── DASHBOARD ── */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .stat-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+  .stat-value.green { color: var(--green); }
+  .stat-value.amber { color: var(--amber); }
+  .stat-value.blue { color: var(--blue); }
+
+  /* ── EVENT LOG ── */
+  .event-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .event-item:last-child { border-bottom: none; }
+  .event-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .event-details { flex: 1; min-width: 0; }
+  .event-title { font-size: 0.88rem; font-weight: 500; }
+  .event-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+  .event-payout { color: var(--green); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; white-space: nowrap; }
+
+  /* ── SCORE BAR ── */
+  .score-container { margin: 10px 0; }
+  .score-label-row { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
+  .score-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; background: var(--amber); }
+
+  /* ── LANDING ── */
+  .hero {
+    text-align: center;
+    padding: 60px 24px 40px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--amber-glow);
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero h1 { font-size: 2.5rem; margin-bottom: 12px; }
+  .hero h1 .highlight { color: var(--amber); }
+  .hero p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 320px; margin: 0 auto 32px; }
+  .hero-stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--amber);
+    display: block;
+  }
+  .hero-stat .lbl { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    sticky: bottom 0;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 14px 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    transition: color 0.18s;
+    border-top: 2px solid transparent;
+  }
+  .tab-btn .tab-icon { font-size: 1.2rem; }
+  .tab-btn.active { color: var(--amber); border-top-color: var(--amber); }
+
+  /* ── PROCESSING ── */
+  .processing-overlay {
+    position: fixed; inset: 0;
+    background: rgba(8,12,20,0.95);
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 500;
+    gap: 20px;
+  }
+  .processing-overlay.show { display: flex; }
+  .spinner {
+    width: 56px; height: 56px;
+    border: 3px solid var(--border);
+    border-top-color: var(--amber);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .processing-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--amber);
+  }
+  .processing-sub { color: var(--text-muted); font-size: 0.85rem; }
+
+  /* ── PULSE ANIMATION ── */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 var(--amber-glow); }
+    50% { box-shadow: 0 0 0 8px transparent; }
+  }
+  .pulse { animation: pulse-glow 2s infinite; }
+
+  /* ── UTILS ── */
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .text-center { text-align: center; }
+  .mt-8 { margin-top: 8px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .mb-0 { margin-bottom: 0; }
+  .gap-8 { gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .chip-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+  .chip-amber { background: var(--amber-glow); color: var(--amber); border: 1px solid var(--amber); }
+  .chip-red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
+  .chip-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue); }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  .empty-state .empty-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+
+  /* ── CLAIM EXPLAINER ── */
+  .flow-steps { display: flex; flex-direction: column; gap: 0; }
+  .flow-step {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 12px 0;
+    position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 17px; top: 40px;
+    width: 2px; height: calc(100% - 16px);
+    background: var(--border);
+  }
+  .step-circle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--amber);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    background: var(--surface2);
+  }
+  .step-info { padding-top: 6px; }
+  .step-title { font-weight: 600; font-size: 0.9rem; }
+  .step-desc { color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+
+  @media (max-width: 400px) {
+    .trigger-grid { grid-template-columns: 1fr 1fr; }
+    .hero h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ SCREEN: LANDING ══════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="hero">
+    <div class="hero-badge">🛡 Parametric Income Insurance</div>
+    <h1>Your Shift,<br/><span class="highlight">Protected.</span></h1>
+    <p>Zero-touch insurance that pays out automatically when disruptions hit your earnings. No forms. No waiting. No friction.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="num">11M+</span>
+        <span class="lbl">Gig Workers</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">&lt;3s</span>
+        <span class="lbl">Payout Time</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">₹0</span>
+        <span class="lbl">Claim Forms</span>
+      </div>
+    </div>
+    <button class="btn btn-primary pulse" onclick="goTo('screen-register')">Get Protected Now →</button>
+    <p class="mt-16" style="font-size:0.78rem; color:var(--text-dim)">Starting at ₹100/week · Cancel anytime</p>
+  </div>
+
+  <div style="padding: 0 24px 40px; max-width:480px; margin:0 auto; width:100%;">
+    <div class="section-title">How It Works</div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="step-circle">📝</div>
+        <div class="step-info">
+          <div class="step-title">Register Once</div>
+          <div class="step-desc">Set up your profile in 60 seconds</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">🎯</div>
+        <div class="step-info">
+          <div class="step-title">Pick Your Plan</div>
+          <div class="step-desc">Dynamic premium based on your location & weather</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">⚡</div>
+        <div class="step-info">
+          <div class="step-title">Auto-Payout Triggers</div>
+          <div class="step-desc">AI detects disruptions → money hits your wallet instantly</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">💚</div>
+        <div class="step-info">
+          <div class="step-title">Zero Claims Process</div>
+          <div class="step-desc">No paperwork. No adjuster. No delay.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ SCREEN: REGISTER ══════════════════════════════════════ -->
+<div id="screen-register" class="screen">
+  <div class="nav">
+    <div class="nav-logo">Shift<span>Shield</span></div>
+    <div class="nav-badge">Step 1 of 3</div>
+  </div>
+  <div class="content">
+    <div class="mt-16 mb-0">
+      <h2>Create Your<br/>Profile</h2>
+      <p class="subtitle mt-8">Takes less than a minute. Your data stays on your device.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="reg-name" placeholder="e.g. Arjun Kumar" />
+    </div>
+    <div class="form-group">
+      <label>Work Type</label>
+      <select id="reg-work">
+        <option value="delivery">🛵 Delivery Partner (Swiggy / Zomato)</option>
+        <option value="cab">🚕 Cab Driver (Ola / Uber)</option>
+        <option value="grocery">🛒 Grocery Delivery (Blinkit / Zepto)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>City</label>
+      <select id="reg-city">
+        <option value="mumbai">Mumbai</option>
+        <option value="bangalore">Bangalore</option>
+        <option value="delhi">Delhi</option>
+        <option value="chennai">Chennai</option>
+        <option value="hyderabad">Hyderabad</option>
+        <option value="coimbatore">Coimbatore</option>
+        <option value="pune">Pune</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" id="reg-phone" placeholder="+91 98765 43210" />
+    </div>
+
+    <div style="height:24px;"></div>
+    <button class="btn btn-primary" onclick="registerUser()">Continue to Plans →</button>
+    <button class="btn btn-outline mt-8" onclick="goTo('screen-landing')" style="margin-top:10px;">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ SCREEN: PLAN SELECTION ══════════════════════════════════════ -->
+<div id="screen-plans" class="screen">
+  <div class="nav">
+    <div class="nav-logo">Shift<span>Shield</span></div>
+    <div class="nav-badge">Step 2 of 3</div>
+  </div>
+  <div class="content">
+    <div class="mt-16">
+      <h2>Choose Your Plan</h2>
+      <p class="subtitle mt-8">Premium adjusts live based on your location risk &amp; current weather.</p>
+    </div>
+    <div class="divider"></div>
+
+    <!-- DYNAMIC PREMIUM CALCULATOR -->
+    <div class="section-title">Premium Calculator</div>
+
+    <div style="margin-bottom:10px;">
+      <label style="margin-bottom:8px; display:block;">Location Risk</label>
+      <div class="risk-row">
+        <button class="risk-btn active-safe" onclick="setRisk('safe', this)">🟢 Safe Zone</button>
+        <button class="risk-btn" onclick="setRisk('medium', this)">🟡 Medium</button>
+        <button class="risk-btn" onclick="setRisk('high', this)">🔴 High Risk</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <label style="margin-bottom:8px; display:block;">Weather Condition</label>
+      <div class="risk-row">
+        <button class="risk-btn active-safe" onclick="setWeather('normal', this)">☀️ Normal</button>
+        <button class="risk-btn" onclick="setWeather('rain', this)">🌧️ Rain</button>
+        <button class="risk-btn" onclick="setWeather('heat', this)">🌡️ Heatwave</button>
+      </div>
+    </div>
+
+    <div class="premium-box">
+      <div class="premium-label">Your Adjusted Weekly Premium</div>
+      <div class="premium-amount" id="calc-premium">₹100</div>
+      <div class="premium-breakdown" id="calc-breakdown">Base ₹100 · Risk ×1.0 · Weather ×1.0</div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">Select Plan</div>
+
+    <!-- BASIC PLAN -->
+    <div class="plan-card selected" id="plan-basic" onclick="selectPlan('basic')">
+      <div class="plan-header">
+        <div>
+          <div class="plan-name">Basic Shield</div>
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">For occasional disruptions</div>
+        </div>
+        <div class="plan-price">
+          <div class="amount" id="basic-price">₹100</div>
+          <div class="period">/week</div>
+        </div>
+      </div>
+      <ul class="plan-features">
+        <li>Up to ₹500 payout per event</li>
+        <li>Rain, Heatwave triggers</li>
+        <li>3 claims per week</li>
+        <li>Instant wallet credit</li>
+        <li>Basic disruption coverage</li>
+      </ul>
+    </div>
+
+    <!-- PREMIUM PLAN -->
+    <div class="plan-card" id="plan-premium" onclick="selectPlan('premium')">
+      <div class="plan-header">
+        <div>
+          <div class="plan-name">Premium Shield <span class="plan-badge">Popular</span></div>
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Full protection coverage</div>
+        </div>
+        <div class="plan-price">
+          <div class="amount" id="premium-price">₹150</div>
+          <div class="period">/week</div>
+        </div>
+      </div>
+      <ul class="plan-features">
+        <li>Up to ₹1000 payout per event</li>
+        <li>All 5 trigger types covered</li>
+        <li>Unlimited claims</li>
+        <li>Priority wallet credit</li>
+        <li>Platform outage + demand drop</li>
+        <li>₹5000 weekly earning protection</li>
+      </ul>
+    </div>
+
+    <button class="btn btn-primary" onclick="confirmPlan()">Activate Protection →</button>
+    <button class="btn btn-outline" onclick="goTo('screen-register')" style="margin-top:10px;">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ SCREEN: MAIN APP ══════════════════════════════════════ -->
+<div id="screen-app" class="screen">
+  <div class="nav">
+    <div class="nav-logo">Shift<span>Shield</span></div>
+    <div class="nav-wallet" onclick="switchTab('wallet')">
+      💚 <span class="amt" id="nav-wallet-bal">₹0</span>
+    </div>
+  </div>
+
+  <!-- TAB CONTENT -->
+  <div style="flex:1; overflow-y:auto;">
+
+    <!-- DASHBOARD TAB -->
+    <div id="tab-dashboard" class="content">
+      <div class="mt-8">
+        <div style="font-size:0.85rem; color:var(--text-muted);">Welcome back,</div>
+        <h2 id="dash-name" style="margin-bottom:0;">Arjun Kumar</h2>
+        <div class="mt-8" id="dash-status-chips">
+          <span class="chip chip-green">🟢 Protected</span>
+        </div>
+      </div>
+
+      <div class="stats-grid mt-16">
+        <div class="stat-card">
+          <div class="stat-label">Plan</div>
+          <div class="stat-value amber" id="dash-plan">Basic</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Weekly Premium</div>
+          <div class="stat-value amber" id="dash-premium">₹100</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Wallet Balance</div>
+          <div class="stat-value green" id="dash-wallet">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Protected Hours</div>
+          <div class="stat-value blue" id="dash-hours">56 hrs</div>
+        </div>
+      </div>
+
+      <div class="card card-highlight">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <div class="section-title mb-0">This Week</div>
+          <span class="chip chip-green">Active</span>
+        </div>
+        <div class="flex-between" style="margin-bottom:8px;">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Events Triggered</span>
+          <span id="dash-event-count" style="font-weight:600;">0</span>
+        </div>
+        <div class="flex-between" style="margin-bottom:8px;">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Total Payouts</span>
+          <span id="dash-total-payout" style="font-weight:600; color:var(--green);">₹0</span>
+        </div>
+        <div class="flex-between">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Coverage Remaining</span>
+          <span id="dash-coverage" style="font-weight:600; color:var(--amber);">₹3,500</span>
+        </div>
+      </div>
+
+      <div class="section-title">Recent Events</div>
+      <div id="dash-events-list">
+        <div class="empty-state">
+          <span class="empty-icon">📭</span>
+          No disruption events yet.<br/>Your coverage is active and monitoring.
+        </div>
+      </div>
+    </div>
+
+    <!-- TRIGGERS TAB -->
+    <div id="tab-triggers" class="content" style="display:none;">
+      <div class="mt-8">
+        <h2>Trigger<br/>Simulator</h2>
+        <p class="subtitle mt-8">Simulate real-world disruptions. Watch ShiftShield auto-process your payout in real time.</p>
+      </div>
+      <div class="divider"></div>
+
+      <div class="section-title">Activate Disruption Event</div>
+      <div class="trigger-grid">
+        <button class="trigger-btn" onclick="fireTrigger('rain')">
+          <span class="icon">🌧️</span>
+          <span>Rain Alert</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Heavy rainfall</span>
+        </button>
+        <button class="trigger-btn" onclick="fireTrigger('heat')">
+          <span class="icon">🌡️</span>
+          <span>Heatwave</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">42°C+ temps</span>
+        </button>
+        <button class="trigger-btn" onclick="fireTrigger('outage')">
+          <span class="icon">⚡</span>
+          <span>App Outage</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Platform down</span>
+        </button>
+        <button class="trigger-btn" onclick="fireTrigger('demand')">
+          <span class="icon">📉</span>
+          <span>Demand Drop</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">&lt;40% normal</span>
+        </button>
+        <button class="trigger-btn" onclick="fireTrigger('accident')" style="grid-column: span 2;">
+          <span class="icon">🚧</span>
+          <span>Road Disruption</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Protest / Flood blockage</span>
+        </button>
+      </div>
+
+      <!-- LAST TRIGGER RESULT -->
+      <div id="trigger-result-card" style="display:none;">
+        <div class="section-title">Last Trigger Analysis</div>
+        <div class="card card-highlight">
+          <div class="flex-between" style="margin-bottom:12px;">
+            <span style="font-weight:600;" id="tr-type">Rain Alert</span>
+            <span class="chip chip-green">Auto-Processed</span>
+          </div>
+
+          <div class="score-container">
+            <div class="score-label-row">
+              <span>Disruption Score</span>
+              <span id="tr-score-val" style="color:var(--amber); font-weight:600;">0.72</span>
+            </div>
+            <div class="score-bar-bg">
+              <div class="score-bar-fill" id="tr-score-bar" style="width:72%"></div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="flex-between" style="margin-bottom:8px;">
+            <span style="font-size:0.85rem; color:var(--text-muted);">Event Severity</span>
+            <span id="tr-severity" style="font-weight:600;">Medium</span>
+          </div>
+          <div class="flex-between" style="margin-bottom:8px;">
+            <span style="font-size:0.85rem; color:var(--text-muted);">Est. Income Loss</span>
+            <span id="tr-loss" style="font-weight:600; color:var(--red);">₹350</span>
+          </div>
+          <div class="flex-between" style="margin-bottom:8px;">
+            <span style="font-size:0.85rem; color:var(--text-muted);">Coverage Ratio</span>
+            <span id="tr-ratio" style="font-weight:600;">70%</span>
+          </div>
+          <div class="divider"></div>
+          <div class="flex-between">
+            <span style="font-weight:600; font-size:0.95rem;">Payout Amount</span>
+            <span id="tr-payout" style="color:var(--green); font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem;">₹245</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">How Zero-Touch Claims Work</div>
+      <div class="card">
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-circle" style="font-size:0.8rem;">01</div>
+            <div class="step-info">
+              <div class="step-title">Event Detected</div>
+              <div class="step-desc">IoT / API data triggers disruption alert</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-circle" style="font-size:0.8rem;">02</div>
+            <div class="step-info">
+              <div class="step-title">Score Calculated</div>
+              <div class="step-desc">Disruption score 0–1 computed instantly</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-circle" style="font-size:0.8rem;">03</div>
+            <div class="step-info">
+              <div class="step-title">Payout Released</div>
+              <div class="step-desc">Smart contract executes wallet credit</div>
+            </div>
+          </div>
+          <div class="flow-step" style="border:none;">
+            <div class="step-circle" style="font-size:0.8rem;">04</div>
+            <div class="step-info">
+              <div class="step-title">Notification Sent</div>
+              <div class="step-desc">Instant SMS + app push. Done.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WALLET TAB -->
+    <div id="tab-wallet" class="content" style="display:none;">
+      <div class="mt-8">
+        <div style="font-size:0.85rem; color:var(--text-muted);">ShiftShield Wallet</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:3rem; color:var(--green); margin:8px 0;" id="wallet-main-bal">₹0</div>
+        <div style="font-size:0.85rem; color:var(--text-muted);">Available balance</div>
+        <div class="mt-16">
+          <button class="btn btn-primary btn-sm" onclick="alert('Transfer feature coming soon!')">↗ Transfer to Bank</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Earned</div>
+          <div class="stat-value green" id="wallet-total-earned">₹0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Premium Paid</div>
+          <div class="stat-value amber" id="wallet-premium-paid">₹100</div>
+        </div>
+      </div>
+
+      <div class="section-title">Transaction History</div>
+      <div id="wallet-tx-list">
+        <div class="card">
+          <div class="event-item">
+            <div class="event-icon" style="background:var(--amber-glow);">💳</div>
+            <div class="event-details">
+              <div class="event-title">Premium Activated</div>
+              <div class="event-meta">Plan start · Today</div>
+            </div>
+            <div style="color:var(--red); font-family:'Syne',sans-serif; font-weight:700;" id="wallet-tx-premium">-₹100</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div id="tab-profile" class="content" style="display:none;">
+      <div class="mt-8">
+        <div style="width:64px;height:64px; border-radius:50%; background:var(--amber-glow); border:2px solid var(--amber); display:flex;align-items:center;justify-content:center; font-size:1.8rem; margin-bottom:12px;">👤</div>
+        <h2 id="profile-name">Arjun Kumar</h2>
+        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;" id="profile-work">🛵 Delivery Partner</div>
+      </div>
+
+      <div class="card mt-16">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span style="font-size:0.85rem; color:var(--text-muted);">City</span>
+          <span id="profile-city" style="font-weight:500;">Mumbai</span>
+        </div>
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Member Since</span>
+          <span style="font-weight:500;" id="profile-since">Today</span>
+        </div>
+        <div class="flex-between">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Plan Status</span>
+          <span class="chip chip-green">Active</span>
+        </div>
+      </div>
+
+      <div class="section-title">Coverage Summary</div>
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Active Plan</span>
+          <span id="profile-plan" style="font-weight:600; color:var(--amber);">Basic Shield</span>
+        </div>
+        <div class="flex-between" style="margin-bottom:12px;">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Max Payout/Event</span>
+          <span id="profile-max-payout" style="font-weight:600;">₹500</span>
+        </div>
+        <div class="flex-between">
+          <span style="font-size:0.85rem; color:var(--text-muted);">Weekly Coverage</span>
+          <span id="profile-weekly-cov" style="font-weight:600;">₹3,500</span>
+        </div>
+      </div>
+
+      <button class="btn btn-outline mt-16" onclick="goTo('screen-plans')">⚡ Upgrade Plan</button>
+      <button class="btn btn-danger" style="margin-top:10px;" onclick="if(confirm('Reset all data?')){resetApp();}">Reset Demo</button>
+    </div>
+
+  </div><!-- end tab content wrapper -->
+
+  <!-- BOTTOM TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tab-btn-dashboard" onclick="switchTab('dashboard')">
+      <span class="tab-icon">📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button class="tab-btn" id="tab-btn-triggers" onclick="switchTab('triggers')">
+      <span class="tab-icon">⚡</span>
+      <span>Triggers</span>
+    </button>
+    <button class="tab-btn" id="tab-btn-wallet" onclick="switchTab('wallet')">
+      <span class="tab-icon">💚</span>
+      <span>Wallet</span>
+    </button>
+    <button class="tab-btn" id="tab-btn-profile" onclick="switchTab('profile')">
+      <span class="tab-icon">👤</span>
+      <span>Profile</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ PROCESSING OVERLAY ══════════════════════════════════════ -->
+<div class="processing-overlay" id="processing-overlay">
+  <div class="spinner"></div>
+  <div class="processing-text">Processing Payout</div>
+  <div class="processing-sub" id="processing-sub">Calculating disruption score...</div>
+</div>
+
+<!-- PAYOUT TOAST -->
+<div class="toast" id="payout-toast">
+  <div class="toast-icon">💚</div>
+  <div class="toast-amount" id="toast-amount">₹245</div>
+  <div class="toast-label" id="toast-label">Credited to your ShiftShield wallet</div>
+  <div style="font-size:0.75rem; color:var(--text-dim); margin-top:8px;">Zero-touch auto-claim • No form required</div>
+</div>
+
+<!-- ══════════════════════════════════════ JS LOGIC ══════════════════════════════════════ -->
+<script>
+// ── STATE ──
+let state = {
+  user: null,
+  plan: 'basic',
+  risk: 'safe',
+  weather: 'normal',
+  walletBalance: 0,
+  totalEarned: 0,
+  eventCount: 0,
+  totalPayout: 0,
+  weeklyPaid: 100,
+  events: []
+};
+
+// ── PLAN CONFIG ──
+const PLANS = {
+  basic:   { name: 'Basic Shield',   base: 100, maxPayout: 500,  weekCoverage: 3500 },
+  premium: { name: 'Premium Shield', base: 150, maxPayout: 1000, weekCoverage: 7000 }
+};
+
+// ── RISK MULTIPLIERS ──
+const RISK_MULT   = { safe: 1.0, medium: 1.2, high: 1.5 };
+const WEATHER_MULT= { normal: 1.0, rain: 1.3, heat: 1.2 };
+
+// ── TRIGGER DATA ──
+const TRIGGERS = {
+  rain:     { name: '🌧️ Heavy Rain Alert',      base_score: 0.72, base_loss: 350, icon: '🌧️', color: '#00b4d8', severity: 'Medium' },
+  heat:     { name: '🌡️ Heatwave Warning',      base_score: 0.68, base_loss: 280, icon: '🌡️', color: '#ff6b35', severity: 'Medium' },
+  outage:   { name: '⚡ Platform App Outage',   base_score: 0.88, base_loss: 420, icon: '⚡', color: '#f5a623', severity: 'High' },
+  demand:   { name: '📉 Demand Drop Alert',     base_score: 0.55, base_loss: 200, icon: '📉', color: '#ff4757', severity: 'Low' },
+  accident: { name: '🚧 Road Disruption',       base_score: 0.79, base_loss: 380, icon: '🚧', color: '#a855f7', severity: 'High' }
+};
+
+// ── SCREEN NAVIGATION ──
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── PREMIUM CALCULATION ──
+function calcPremium(plan, risk, weather) {
+  const base = PLANS[plan].base;
+  return Math.round(base * RISK_MULT[risk] * WEATHER_MULT[weather]);
+}
+
+function updatePremiumDisplay() {
+  const p = calcPremium(state.plan, state.risk, state.weather);
+  const rm = RISK_MULT[state.risk];
+  const wm = WEATHER_MULT[state.weather];
+  document.getElementById('calc-premium').textContent = '₹' + p;
+  document.getElementById('calc-breakdown').textContent =
+    `Base ₹${PLANS[state.plan].base} · Risk ×${rm} · Weather ×${wm}`;
+
+  const bp = calcPremium('basic', state.risk, state.weather);
+  const pp = calcPremium('premium', state.risk, state.weather);
+  document.getElementById('basic-price').textContent = '₹' + bp;
+  document.getElementById('premium-price').textContent = '₹' + pp;
+}
+
+function setRisk(val, el) {
+  state.risk = val;
+  document.querySelectorAll('.risk-row')[0].querySelectorAll('.risk-btn').forEach(b => {
+    b.className = 'risk-btn';
+  });
+  el.className = 'risk-btn active-' + val;
+  // animate premium
+  const el2 = document.getElementById('calc-premium');
+  el2.style.transform = 'scale(1.15)';
+  el2.style.color = val === 'high' ? 'var(--red)' : val === 'medium' ? 'var(--amber)' : 'var(--green)';
+  setTimeout(() => { el2.style.transform = 'scale(1)'; el2.style.color = 'var(--amber)'; }, 300);
+  updatePremiumDisplay();
+}
+
+function setWeather(val, el) {
+  state.weather = val;
+  document.querySelectorAll('.risk-row')[1].querySelectorAll('.risk-btn').forEach(b => {
+    b.className = 'risk-btn';
+  });
+  const cls = val === 'rain' ? 'active-medium' : val === 'heat' ? 'active-high' : 'active-safe';
+  el.className = 'risk-btn ' + cls;
+  const el2 = document.getElementById('calc-premium');
+  el2.style.transform = 'scale(1.15)';
+  setTimeout(() => { el2.style.transform = 'scale(1)'; }, 300);
+  updatePremiumDisplay();
+}
+
+function selectPlan(plan) {
+  state.plan = plan;
+  document.getElementById('plan-basic').className = 'plan-card' + (plan==='basic' ? ' selected' : '');
+  document.getElementById('plan-premium').className = 'plan-card' + (plan==='premium' ? ' selected' : '');
+  updatePremiumDisplay();
+}
+
+// ── REGISTRATION ──
+function registerUser() {
+  const name = document.getElementById('reg-name').value.trim();
+  const work = document.getElementById('reg-work').value;
+  const city = document.getElementById('reg-city').value;
+  const phone = document.getElementById('reg-phone').value.trim();
+
+  if (!name) { alert('Please enter your name.'); return; }
+
+  state.user = { name, work, city, phone };
+  localStorage.setItem('ss_user', JSON.stringify(state.user));
+  goTo('screen-plans');
+  updatePremiumDisplay();
+}
+
+// ── CONFIRM PLAN ──
+function confirmPlan() {
+  const premium = calcPremium(state.plan, state.risk, state.weather);
+  state.weeklyPaid = premium;
+  state.walletBalance = 0;
+
+  // update dashboard
+  const u = state.user;
+  const workMap = {
+    delivery: '🛵 Delivery Partner',
+    cab: '🚕 Cab Driver',
+    grocery: '🛒 Grocery Delivery'
+  };
+  const cityMap = {
+    mumbai:'Mumbai', bangalore:'Bangalore', delhi:'Delhi',
+    chennai:'Chennai', hyderabad:'Hyderabad', coimbatore:'Coimbatore', pune:'Pune'
+  };
+
+  document.getElementById('dash-name').textContent = u.name;
+  document.getElementById('dash-plan').textContent = PLANS[state.plan].name.replace(' Shield','');
+  document.getElementById('dash-premium').textContent = '₹' + premium;
+  document.getElementById('dash-wallet').textContent = '₹0';
+  document.getElementById('dash-hours').textContent = state.plan === 'premium' ? '168 hrs' : '56 hrs';
+  document.getElementById('dash-coverage').textContent = '₹' + PLANS[state.plan].weekCoverage.toLocaleString('en-IN');
+
+  document.getElementById('profile-name').textContent = u.name;
+  document.getElementById('profile-work').textContent = workMap[u.work] || u.work;
+  document.getElementById('profile-city').textContent = cityMap[u.city] || u.city;
+  document.getElementById('profile-plan').textContent = PLANS[state.plan].name;
+  document.getElementById('profile-max-payout').textContent = '₹' + PLANS[state.plan].maxPayout;
+  document.getElementById('profile-weekly-cov').textContent = '₹' + PLANS[state.plan].weekCoverage.toLocaleString('en-IN');
+  document.getElementById('profile-since').textContent = new Date().toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+
+  document.getElementById('wallet-main-bal').textContent = '₹0';
+  document.getElementById('wallet-total-earned').textContent = '₹0';
+  document.getElementById('wallet-premium-paid').textContent = '₹' + premium;
+  document.getElementById('wallet-tx-premium').textContent = '-₹' + premium;
+  document.getElementById('nav-wallet-bal').textContent = '₹0';
+
+  goTo('screen-app');
+}
+
+// ── TRIGGER LOGIC ──
+function fireTrigger(type) {
+  const t = TRIGGERS[type];
+  if (!t) return;
+
+  // Check plan coverage
+  if (state.plan === 'basic' && (type === 'outage' || type === 'demand' || type === 'accident')) {
+    showUpgradePrompt(type);
+    return;
+  }
+
+  // Processing steps
+  const overlay = document.getElementById('processing-overlay');
+  const sub = document.getElementById('processing-sub');
+  overlay.classList.add('show');
+
+  const steps = [
+    'Fetching real-time event data...',
+    'Calculating disruption score...',
+    'Verifying policy eligibility...',
+    'Releasing payout to wallet...'
+  ];
+  let i = 0;
+  const stepInterval = setInterval(() => {
+    sub.textContent = steps[i];
+    i++;
+    if (i >= steps.length) clearInterval(stepInterval);
+  }, 400);
+
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    processEvent(type, t);
+  }, 1900);
+}
+
+function processEvent(type, t) {
+  // Calculate with some randomness
+  const scoreVariance = (Math.random() - 0.5) * 0.15;
+  const score = Math.min(0.98, Math.max(0.3, t.base_score + scoreVariance));
+  const lossVariance = Math.round((Math.random() - 0.5) * 80);
+  const estLoss = t.base_loss + lossVariance;
+  const maxP = PLANS[state.plan].maxPayout;
+  const payout = Math.min(maxP, Math.round(estLoss * score * (state.plan === 'premium' ? 0.85 : 0.7)));
+  const ratio = Math.round((payout / estLoss) * 100);
+
+  // Update trigger result card
+  document.getElementById('tr-type').textContent = t.name;
+  document.getElementById('tr-score-val').textContent = score.toFixed(2);
+  document.getElementById('tr-score-bar').style.width = (score * 100) + '%';
+  document.getElementById('tr-score-bar').style.background =
+    score > 0.75 ? 'var(--red)' : score > 0.5 ? 'var(--amber)' : 'var(--green)';
+  document.getElementById('tr-severity').textContent = t.severity;
+  document.getElementById('tr-loss').textContent = '₹' + estLoss;
+  document.getElementById('tr-ratio').textContent = ratio + '%';
+  document.getElementById('tr-payout').textContent = '₹' + payout;
+  document.getElementById('trigger-result-card').style.display = 'block';
+
+  // Update state
+  state.walletBalance += payout;
+  state.totalEarned += payout;
+  state.eventCount++;
+  state.totalPayout += payout;
+
+  const ts = new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+  const event = { type, name: t.name, icon: t.icon, payout, score, ts };
+  state.events.unshift(event);
+
+  // Update all displays
+  updateWallet();
+  updateDashboard();
+  addWalletTx(event);
+
+  // Show toast
+  showToast(payout, t.name);
+
+  // Switch to triggers tab to show result
+  switchTab('triggers');
+}
+
+function showUpgradePrompt(type) {
+  const name = TRIGGERS[type]?.name || type;
+  const overlay = document.getElementById('processing-overlay');
+  overlay.classList.add('show');
+  document.getElementById('processing-sub').textContent = 'Checking coverage limits...';
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    if (confirm(`⚠️ "${name}" is only covered under Premium Shield.\n\nUpgrade to Premium for full coverage?\n(₹150/week)`)) {
+      selectPlan('premium');
+      goTo('screen-plans');
+    }
+  }, 800);
+}
+
+// ── WALLET UPDATE ──
+function updateWallet() {
+  const bal = '₹' + state.walletBalance;
+  document.getElementById('dash-wallet').textContent = bal;
+  document.getElementById('wallet-main-bal').textContent = bal;
+  document.getElementById('wallet-total-earned').textContent = '₹' + state.totalEarned;
+  document.getElementById('nav-wallet-bal').textContent = bal;
+}
+
+function addWalletTx(event) {
+  const list = document.getElementById('wallet-tx-list');
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.marginBottom = '8px';
+  card.innerHTML = `
+    <div class="event-item">
+      <div class="event-icon" style="background:var(--green-dim);">${event.icon}</div>
+      <div class="event-details">
+        <div class="event-title">${event.name}</div>
+        <div class="event-meta">Auto-payout · Score ${event.score.toFixed(2)} · ${event.ts}</div>
+      </div>
+      <div class="event-payout">+₹${event.payout}</div>
+    </div>`;
+  list.insertBefore(card, list.firstChild);
+}
+
+// ── DASHBOARD UPDATE ──
+function updateDashboard() {
+  document.getElementById('dash-event-count').textContent = state.eventCount;
+  document.getElementById('dash-total-payout').textContent = '₹' + state.totalPayout;
+
+  const remaining = Math.max(0, PLANS[state.plan].weekCoverage - state.totalPayout);
+  document.getElementById('dash-coverage').textContent = '₹' + remaining.toLocaleString('en-IN');
+
+  const list = document.getElementById('dash-events-list');
+  list.innerHTML = '';
+  if (state.events.length === 0) {
+    list.innerHTML = `<div class="empty-state"><span class="empty-icon">📭</span>No disruption events yet.<br/>Your coverage is active and monitoring.</div>`;
+    return;
+  }
+  const card = document.createElement('div');
+  card.className = 'card';
+  state.events.slice(0, 5).forEach(ev => {
+    card.innerHTML += `
+      <div class="event-item">
+        <div class="event-icon" style="background:var(--green-dim);">${ev.icon}</div>
+        <div class="event-details">
+          <div class="event-title">${ev.name}</div>
+          <div class="event-meta">Score ${ev.score.toFixed(2)} · ${ev.ts} · Auto-Processed</div>
+        </div>
+        <div class="event-payout">+₹${ev.payout}</div>
+      </div>`;
+  });
+  list.appendChild(card);
+}
+
+// ── TOAST ──
+function showToast(amount, label) {
+  const toast = document.getElementById('payout-toast');
+  document.getElementById('toast-amount').textContent = '₹' + amount + ' Credited';
+  document.getElementById('toast-label').textContent = label + ' — Auto-processed';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+// ── TAB SWITCHING ──
+function switchTab(tab) {
+  ['dashboard','triggers','wallet','profile'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('tab-btn-' + t);
+    if (btn) btn.className = 'tab-btn' + (t === tab ? ' active' : '');
+  });
+}
+
+// ── RESET ──
+function resetApp() {
+  state = {
+    user: null, plan: 'basic', risk: 'safe', weather: 'normal',
+    walletBalance: 0, totalEarned: 0, eventCount: 0, totalPayout: 0,
+    weeklyPaid: 100, events: []
+  };
+  localStorage.clear();
+  goTo('screen-landing');
+}
+
+// ── INIT ──
+(function init() {
+  const saved = localStorage.getItem('ss_user');
+  if (saved) {
+    try { state.user = JSON.parse(saved); } catch(e) {}
+  }
+  updatePremiumDisplay();
+})();
+</script>
+</body>
+</html>
