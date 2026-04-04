@@ -1,7 +1,4 @@
-/* ══════════════════════════════════════════════
-   SHIFTSHIELD — script.js
-   Pure vanilla JS. No libraries. No build step.
-══════════════════════════════════════════════ */
+
 
 /* ── APP STATE ── */
 let state = {
