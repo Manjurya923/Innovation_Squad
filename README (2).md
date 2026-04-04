@@ -83,8 +83,9 @@ Each trigger:
 
 | Landing | Registration | Plan Selection |
 |---|---|---|
-| ![Landing]!(https://github.com/user-attachments/assets/3884e92d-fc07-4e5a-ae4b-ad282397c9ca)
- | ![Register](screenshots/register.png) | ![Plans](screenshots/plans.png) |
+| (https://github.com/user-attachments/assets/3884e92d-fc07-4e5a-ae4b-ad282397c9ca)
+ | <img width="896" height="883" alt="image" src="https://github.com/user-attachments/assets/e685d7ef-6df8-4066-b8e6-2f7bec55b407" />
+ | ![Plans](screenshots/plans.png) |
 
 | Dashboard | Trigger Fired | Wallet |
 |---|---|---|
