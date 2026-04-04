@@ -5,7 +5,7 @@
 [![Hackathon](https://img.shields.io/badge/Guidewire-DEVTrails%202026-f59e0b?style=for-the-badge)](https://devtrails.guidewire.com)
 [![Live Demo](https://img.shields.io/badge/Live-Demo-10b981?style=for-the-badge)](https://your-username.github.io/shiftshield)
 [![License](https://img.shields.io/badge/License-MIT-3b82f6?style=for-the-badge)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Prototype-f59e0b?style=for-the-badge)](#)
+[![Status](https://img.shields.io/badge/Status-Prototype-f59e0b?style=for-the-badge)](#) 
 
 ---
 
